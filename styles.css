@@ -272,7 +272,23 @@ body::before {
 }
 .btn-review-game:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(124,77,255,0.45); }
 .btn-review-game.hidden { display: none; }
+.hidden { display: none !important; }
 
+.btn-install {
+  margin-top: 12px;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, #7C4DFF, #4FC3F7);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-family: 'Baloo 2', cursive;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(76,115,255,0.33);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.btn-install:hover { transform: translateY(-2px); box-shadow: 0 7px 20px rgba(76,115,255,0.45); }
 /* ── PROGRESS BAR ── */
 .progress-bar-wrap {
   width: 100%;

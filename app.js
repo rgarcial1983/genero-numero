@@ -12,6 +12,7 @@ let selGenero  = null;
 let selNumero  = null;
 let selectedQ  = 10;   // default: Normal
 let TOTAL      = 10;
+let deferredPrompt = null;
 
 /* ════════════════════════════════════════════
    INIT — cargar palabras.json al arrancar
@@ -284,12 +285,46 @@ function closeModalOnBg(e) {
   if (e.target === document.getElementById("modalOverlay")) closeModal();
 }
 
+function registerServiceWorker() {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js')
+      .then(reg => console.log('Service Worker registrado con éxito:', reg))
+      .catch(err => console.warn('Service Worker no pudo registrarse:', err));
+  }
+}
+
+function promptInstall() {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(choice => {
+    if (choice.outcome === 'accepted') {
+      console.log('Instalación aceptada');
+    } else {
+      console.log('Instalación rechazada');
+    }
+    deferredPrompt = null;
+    document.getElementById('installBtn').classList.add('hidden');
+  });
+}
+
 /* ════════════════════════════════════════════
    EVENT LISTENERS
    ════════════════════════════════════════════ */
 document.addEventListener("DOMContentLoaded", () => {
   initStars();
   init();   // carga palabras.json y muestra welcome
+  registerServiceWorker();
+
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    deferredPrompt = e;
+    const installBtn = document.getElementById('installBtn');
+    if (installBtn) installBtn.classList.remove('hidden');
+  });
+
+  window.addEventListener('appinstalled', () => {
+    console.log('App instalada correctamente.');
+  });
 
   document.getElementById("playerName").addEventListener("keydown", e => {
     if (e.key === "Enter") startGame();
