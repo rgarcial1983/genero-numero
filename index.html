@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌈 Género y Número</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ── FONDO ANIMADO ── -->
+  <div class="stars" id="starsContainer"></div>
+
+  <!-- ════════════════════════════════════════
+       PANTALLA: CARGANDO
+  ═════════════════════════════════════════ -->
+  <div class="screen active" id="loading">
+    <span class="loading-spinner">⏳</span>
+    <div class="loading-text" id="loadingText">Cargando palabras...</div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       PANTALLA: BIENVENIDA
+  ═════════════════════════════════════════ -->
+  <div class="screen" id="welcome">
+    <div class="logo">🌈 Género y Número</div>
+    <div class="subtitle">¡Aprende jugando como un campeón!</div>
+    <span class="mascot">🦁</span>
+
+    <div class="welcome-card">
+      <label for="playerName">¿Cómo te llamas? 👤</label>
+      <input type="text" id="playerName" placeholder="Escribe tu nombre..." maxlength="20" autocomplete="off">
+
+      <span class="q-selector-label">🔢 ¿Cuántas preguntas quieres?</span>
+      <div class="q-selector-row">
+        <button class="q-btn" onclick="selectQ(5)" data-q="5">
+          <span class="q-emoji">⚡</span>
+          <span>5</span>
+          <span class="q-label">Rápido</span>
+        </button>
+        <button class="q-btn selected" onclick="selectQ(10)" data-q="10">
+          <span class="q-emoji">🎯</span>
+          <span>10</span>
+          <span class="q-label">Normal</span>
+        </button>
+        <button class="q-btn" onclick="selectQ(20)" data-q="20">
+          <span class="q-emoji">🏆</span>
+          <span>20</span>
+          <span class="q-label">Reto</span>
+        </button>
+      </div>
+
+      <button class="btn-start" onclick="startGame()">🚀 ¡Start!</button>
+    </div>
+
+    <button class="btn-review" onclick="openModal()">📖 Repasar el tema</button>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       PANTALLA: JUEGO
+  ═════════════════════════════════════════ -->
+  <div class="screen" id="game">
+
+    <!-- Cabecera -->
+    <div class="game-header">
+      <div class="header-stat">
+        <span class="label">Jugador</span>
+        <span class="value" id="displayName">—</span>
+      </div>
+      <div class="header-stat">
+        <span class="label">Pregunta</span>
+        <span class="value" id="questionCount">1 / 10</span>
+      </div>
+      <div class="header-stat">
+        <span class="label">Puntos</span>
+        <span class="value score-val" id="scoreDisplay">0</span>
+      </div>
+      <button class="btn-review-game" id="inGameReviewBtn" onclick="openModal()">📖 Repasar</button>
+    </div>
+
+    <!-- Barra de progreso -->
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progressBar"></div>
+    </div>
+
+    <!-- Card de pregunta -->
+    <div class="word-card" id="wordCard">
+      <div class="question-label">¿Cuál es su género y número?</div>
+      <div class="word-display"  id="wordDisplay">—</div>
+      <div class="word-article"  id="wordArticle">artículo</div>
+
+      <!-- Género -->
+      <div class="options-section">
+        <div class="options-title">🔵🩷 Género</div>
+        <div class="options-row">
+          <button class="opt-btn genero-masc" onclick="selectGenero('masculino')" data-genero="masculino">👦 Masculino</button>
+          <button class="opt-btn genero-fem"  onclick="selectGenero('femenino')"  data-genero="femenino">👧 Femenino</button>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Número -->
+      <div class="options-section">
+        <div class="options-title">1️⃣🔢 Número</div>
+        <div class="options-row">
+          <button class="opt-btn numero-sing" onclick="selectNumero('singular')" data-numero="singular">🧍 Singular</button>
+          <button class="opt-btn numero-plur" onclick="selectNumero('plural')"   data-numero="plural">👨‍👩‍👧‍👦 Plural</button>
+        </div>
+      </div>
+
+      <button class="btn-confirm" id="confirmBtn" onclick="checkAnswer()" disabled>Confirmar ✅</button>
+    </div>
+
+  </div><!-- /game -->
+
+  <!-- ════════════════════════════════════════
+       PANTALLA: RESULTADOS
+  ═════════════════════════════════════════ -->
+  <div class="screen" id="results">
+    <div class="results-card">
+      <span class="result-mascot" id="resultMascot">🏆</span>
+      <div class="result-name"    id="resultName">Nombre</div>
+      <div class="score-big"      id="scoreBig">200</div>
+      <div class="score-label"    id="scoreLabel">puntos de 200</div>
+      <span class="stars-row"     id="starsRow">⭐⭐⭐⭐⭐</span>
+      <div class="result-message" id="resultMessage">¡Increíble!</div>
+      <div class="results-btns">
+        <button class="btn-again" onclick="resetGame()">🔄 Jugar otra vez</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       OVERLAY: FEEDBACK POR PREGUNTA
+  ═════════════════════════════════════════ -->
+  <div class="feedback-overlay" id="feedbackOverlay">
+    <div class="feedback-card">
+      <span class="feedback-emoji" id="feedbackEmoji">🎉</span>
+      <div class="feedback-title correct" id="feedbackTitle">¡Correcto!</div>
+      <div class="feedback-badges"        id="feedbackBadges"></div>
+      <div class="feedback-explanation"   id="feedbackExplanation"></div>
+      <button class="btn-next" onclick="nextQuestion()">Siguiente ➡️</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       MODAL: REPASAR EL TEMA
+  ═════════════════════════════════════════ -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModalOnBg(event)">
+    <div class="modal-box">
+      <div class="modal-title">📚 Género y Número</div>
+
+      <div class="modal-section masc">
+        <h3>🔵 Género Masculino</h3>
+        <p>Los nombres masculinos suelen llevar el artículo <strong>el / los / un / unos</strong>. Muchos terminan en <strong>-o</strong>.</p>
+        <div class="examples">
+          <span class="ex-tag ex-masc">el perro</span>
+          <span class="ex-tag ex-masc">el libro</span>
+          <span class="ex-tag ex-masc">el coche</span>
+          <span class="ex-tag ex-masc">el sol</span>
+        </div>
+      </div>
+
+      <div class="modal-section fem">
+        <h3>🩷 Género Femenino</h3>
+        <p>Los nombres femeninos suelen llevar el artículo <strong>la / las / una / unas</strong>. Muchos terminan en <strong>-a</strong>.</p>
+        <div class="examples">
+          <span class="ex-tag ex-fem">la gata</span>
+          <span class="ex-tag ex-fem">la mesa</span>
+          <span class="ex-tag ex-fem">la luna</span>
+          <span class="ex-tag ex-fem">la flor</span>
+        </div>
+      </div>
+
+      <div class="modal-section sing">
+        <h3>🧍 Número Singular</h3>
+        <p>El singular habla de <strong>una sola cosa o persona</strong>. Se usa cuando hay solo UNO.</p>
+        <div class="examples">
+          <span class="ex-tag ex-sing">el perro</span>
+          <span class="ex-tag ex-sing">la mesa</span>
+          <span class="ex-tag ex-sing">un libro</span>
+        </div>
+      </div>
+
+      <div class="modal-section plur">
+        <h3>👨‍👩‍👧‍👦 Número Plural</h3>
+        <p>El plural habla de <strong>más de una cosa o persona</strong>. Se forma añadiendo <strong>-s</strong> o <strong>-es</strong>.</p>
+        <div class="examples">
+          <span class="ex-tag ex-plur">los perros</span>
+          <span class="ex-tag ex-plur">las mesas</span>
+          <span class="ex-tag ex-plur">unos libros</span>
+        </div>
+      </div>
+
+      <div class="modal-section" style="border-left-color:#FFB300;">
+        <h3>💡 Truco fácil</h3>
+        <p>Pon <strong>"el"</strong> o <strong>"la"</strong> delante de la palabra.<br>
+        Si suena bien con <strong>"el"</strong> → masculino 🔵<br>
+        Si suena bien con <strong>"la"</strong> → femenino 🩷</p>
+      </div>
+
+      <button class="btn-close-modal" onclick="closeModal()">✅ ¡Ya lo sé, a jugar!</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
