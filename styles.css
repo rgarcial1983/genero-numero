@@ -271,24 +271,30 @@ body::before {
   white-space: nowrap;
 }
 .btn-review-game:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(124,77,255,0.45); }
-.btn-review-game.hidden { display: none; }
+..btn-review-game.hidden { display: none; }
 .hidden { display: none !important; }
 
+:root {
+  --sky: #5ec5ff;
+  --ocean: #0077cc;
+}
+
 .btn-install {
-  margin-top: 12px;
-  padding: 10px 16px;
-  background: linear-gradient(135deg, #7C4DFF, #4FC3F7);
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--sky), var(--ocean));
   color: white;
   border: none;
-  border-radius: 12px;
+  border-radius: 14px;
   font-family: 'Baloo 2', cursive;
-  font-size: 0.95rem;
+  font-size: 1.4rem;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 4px 14px rgba(76,115,255,0.33);
   transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 6px 20px rgba(116,185,255,0.4);
+  margin-top: 8px;
 }
-.btn-install:hover { transform: translateY(-2px); box-shadow: 0 7px 20px rgba(76,115,255,0.45); }
+.btn-install:hover { transform: translateY(-2px); box-shadow: 0 7px 20px rgba(116,185,255,0.45); }
 /* ── PROGRESS BAR ── */
 .progress-bar-wrap {
   width: 100%;
