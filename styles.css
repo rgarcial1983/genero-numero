@@ -280,21 +280,21 @@ body::before {
 }
 
 .btn-install {
-  width: 100%;
-  padding: 14px;
+  padding: 8px 16px;
   background: linear-gradient(135deg, var(--sky), var(--ocean));
   color: white;
   border: none;
-  border-radius: 14px;
+  border-radius: 10px;
   font-family: 'Baloo 2', cursive;
-  font-size: 1.4rem;
+  font-size: 0.95rem;
   font-weight: 700;
   cursor: pointer;
+  box-shadow: 0 4px 12px rgba(116,185,255,0.3);
   transition: transform 0.15s, box-shadow 0.15s;
-  box-shadow: 0 6px 20px rgba(116,185,255,0.4);
+  white-space: nowrap;
   margin-top: 8px;
 }
-.btn-install:hover { transform: translateY(-2px); box-shadow: 0 7px 20px rgba(116,185,255,0.45); }
+.btn-install:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(116,185,255,0.45); }
 /* ── PROGRESS BAR ── */
 .progress-bar-wrap {
   width: 100%;
